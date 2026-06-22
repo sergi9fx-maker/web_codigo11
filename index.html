@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta name="google-site-verification" content="googlefc35a235219acc5d" />
+    <meta charset="UTF-8">
+    <title>Código 11 | Portfolio</title>
+    <style>
+        body { margin: 0; padding: 0; background: #000; overflow: hidden; }
+        #hero-video { width: 100vw; height: 100vh; object-fit: cover; position: fixed; top: 0; left: 0; }
+    </style>
+</head>
+<body>
+    <video id="hero-video" src="porfolio_clip.mp4" playsinline muted></video>
+    <audio id="bg-audio" src="audio.mp3" loop></audio>
+
+    <script>
+        const audio = document.getElementById("bg-audio");
+        const video = document.getElementById("hero-video");
+        const stops = [11.15, 17.08, 23.22, 30.00];
+        let currentStopIndex = 0;
+        let isAnimating = false;
+
+        // Reproducir al hacer clic
+        document.addEventListener('click', () => {
+            audio.play();
+        }, { once: true });
+
+        // Scroll
+        window.addEventListener("wheel", (e) => {
+            if (e.deltaY > 0 && !isAnimating) {
+                audio.play();
+                if (currentStopIndex >= stops.length) {
+                    currentStopIndex = 0;
+                    video.currentTime = 0;
+                }
+                isAnimating = true;
+                video.play();
+                let monitor = setInterval(() => {
+                    if (video.currentTime >= stops[currentStopIndex]) {
+                        video.pause();
+                        currentStopIndex++;
+                        isAnimating = false;
+                        clearInterval(monitor);
+                    }
+                }, 50);
+            }
+        });
+    </script>
+</body>
+</html>
